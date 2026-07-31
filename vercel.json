@@ -4,6 +4,10 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://jobpulse-api.onrender.com/api/$1"
+    },
+    {
       "source": "/((?!assets/).*)",
       "destination": "/index.html"
     }
