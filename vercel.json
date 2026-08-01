@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://jobpulse-api.onrender.com/api/$1"
+      "destination": "https://jobpulsebackend.onrender.com/api/$1"
     },
     {
       "source": "/((?!assets/).*)",

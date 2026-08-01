@@ -2,7 +2,7 @@ import axios from "axios";
 import { getStoredToken, isTokenExpired, removeToken } from "../utils/tokenUtils";
 
 export const API = axios.create({
-    baseURL: "/api"
+    baseURL: "https://jobpulsebackend.onrender.com/api"
 });
 
 API.interceptors.request.use((config) => {
