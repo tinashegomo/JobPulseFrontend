@@ -137,7 +137,7 @@ export default function Resume() {
 
       createOrUpdate.mutate(
         {
-          profile: aiProfile,
+          profile: JSON.stringify(aiProfile),
           resumeText: text.trim(),
           originalFileName: file.name,
         },
