@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useGetAllJobs, useGetMyJobs, useDeleteAllMyJobs } from '../hooks/useJobPulseHooks';
+import { useGetMyJobs, useDeleteAllMyJobs } from '../hooks/useJobPulseHooks';
 import { useAuth } from '../hooks/useAuth';
 import JobCard from '../components/jobs/JobCard';
 import PageHeader from '../components/layout/PageHeader';
@@ -15,8 +15,7 @@ import { groupJobsByTime } from '../utils/groupJobsByTime';
 import { Briefcase, Trash2 } from 'lucide-react';
 
 export default function Home() {
-  const { data: jobs = [], isLoading: loading, error } = useGetAllJobs();
-  const { data: myJobs = [] } = useGetMyJobs();
+  const { data: jobs = [], isLoading: loading, error } = useGetMyJobs();
   const { currentUser } = useAuth();
   const deleteAllJobs = useDeleteAllMyJobs();
   const [searchQuery, setSearchQuery] = useState('');

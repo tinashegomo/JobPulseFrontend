@@ -22,7 +22,7 @@ export function groupJobsByTime(jobs) {
   const groups = BUCKETS.map((b) => ({ label: b.label, jobs: [] }));
 
   for (const job of jobs) {
-    const ms = getTime(job.dateDetected);
+    const ms = getTime(job.createdAt || job.notifiedAt);
     const hours = (Date.now() - ms) / (1000 * 60 * 60);
     for (let i = 0; i < BUCKETS.length; i++) {
       if (hours <= BUCKETS[i].maxHours) {
@@ -33,7 +33,7 @@ export function groupJobsByTime(jobs) {
   }
 
   for (const g of groups) {
-    g.jobs.sort((a, b) => getTime(b.dateDetected) - getTime(a.dateDetected));
+    g.jobs.sort((a, b) => getTime(b.createdAt || b.notifiedAt) - getTime(a.createdAt || a.notifiedAt));
   }
 
   return groups.filter((g) => g.jobs.length > 0);

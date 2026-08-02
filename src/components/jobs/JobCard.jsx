@@ -60,13 +60,13 @@ export default function JobCard({ job }) {
             <span className="text-[14px] font-medium text-text-secondary truncate">
               {job.company}
             </span>
-            {job.matchScore !== null && (
+            {job.score != null && (
               <span className={`inline-flex items-center text-[12px] font-semibold shrink-0 px-2 py-0.5 rounded-pill ${
-                job.matchScore >= 80
+                job.score >= 80
                   ? 'bg-success-main/10 text-success-main'
                   : 'bg-surface-muted text-text-muted'
               }`}>
-                {job.matchScore}% match
+                {job.score}% match
               </span>
             )}
             {seen && (
