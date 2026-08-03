@@ -4,40 +4,15 @@ import { useGetMyProfile, useCreateOrUpdateProfile, useDeleteProfile } from '../
 import { API } from '../api/JobPulseAPI';
 import PageHeader from '../components/layout/PageHeader';
 import { Upload, FileText, Sparkles, User, Briefcase, Code, Wrench, FolderOpen, GraduationCap, MapPin, CheckCircle2, X, Loader2 } from 'lucide-react';
-import mammoth from 'mammoth';
-import * as pdfjsLib from 'pdfjs-dist';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = {
-  'application/pdf': '.pdf',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+  'text/markdown': '.md',
+  'text/plain': '.md',
 };
 
-async function extractTextFromPDF(file) {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-  const pages = [];
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    const strings = content.items.map((item) => item.str);
-    pages.push(strings.join(' '));
-  }
-  return pages.join('\n\n');
-}
-
-async function extractTextFromDOCX(file) {
-  const arrayBuffer = await file.arrayBuffer();
-  const result = await mammoth.extractRawText({ arrayBuffer });
-  return result.value;
-}
-
 async function extractTextFromFile(file) {
-  if (file.type === 'application/pdf') return extractTextFromPDF(file);
-  if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') return extractTextFromDOCX(file);
-  throw new Error('Unsupported file type');
+  return await file.text();
 }
 
 async function analyzeResumeWithAI(resumeText) {
@@ -113,8 +88,8 @@ export default function Resume() {
     if (!file) return;
     setError('');
 
-    if (!Object.keys(ACCEPTED_TYPES).includes(file.type)) {
-      setError('Unsupported file type. Please upload a PDF or DOCX.');
+    if (!file.name.endsWith('.md') && !file.name.endsWith('.txt')) {
+      setError('Please upload a Markdown (.md) file.');
       return;
     }
 
@@ -127,7 +102,7 @@ export default function Resume() {
     try {
       const text = await extractTextFromFile(file);
       if (!text || text.trim().length < 10) {
-        setError('Could not extract meaningful text from this file. Try a different resume.');
+        setError('File is too short. Add more detail to your resume.');
         return;
       }
       setResumeText(text);
@@ -200,9 +175,9 @@ export default function Resume() {
         <div className="flex items-start gap-3 p-4 rounded-[12px] bg-brand-primary/5 border border-brand-primary/15">
           <FileText className="w-5 h-5 text-brand-primary shrink-0 mt-0.5" />
           <p className="text-[13px] text-text-secondary leading-relaxed">
-            Upload your resume as a PDF or DOCX. The AI will automatically extract your skills,
-            tools, projects, and experience — then use this to personally score how well each
-            job matches your background.
+            Upload your resume as a <strong>Markdown (.md)</strong> file. The AI will extract your
+            skills, tools, projects, and experience — then use this to personally score how well
+            each job matches your background.
           </p>
         </div>
 
@@ -229,11 +204,11 @@ export default function Resume() {
                 or <span className="text-brand-primary font-medium">browse files</span>
               </span>
             </div>
-            <span className="text-[11px] text-text-muted">PDF or DOCX — Max 5 MB</span>
+            <span className="text-[11px] text-text-muted">Markdown (.md) — Max 5 MB</span>
             <input
               ref={fileInputRef}
               type="file"
-              accept=".pdf,.docx"
+              accept=".md,.txt"
               onChange={handleFileChange}
               className="hidden"
             />
@@ -285,7 +260,7 @@ export default function Resume() {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".pdf,.docx"
+              accept=".md,.txt"
               onChange={handleFileChange}
               className="hidden"
             />
