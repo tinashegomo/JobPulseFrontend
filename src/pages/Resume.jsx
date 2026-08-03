@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useGetMyProfile, useCreateOrUpdateProfile, useDeleteProfile } from '../hooks/useJobPulseHooks';
 import { API } from '../api/JobPulseAPI';
 import PageHeader from '../components/layout/PageHeader';
-import { Upload, FileText, Sparkles, User, Briefcase, Code, Wrench, FolderOpen, GraduationCap, MapPin, CheckCircle2, X, Loader2 } from 'lucide-react';
+import { Upload, FileText, Sparkles, Briefcase, Code, Wrench, FolderOpen, GraduationCap, CheckCircle2, X, Loader2 } from 'lucide-react';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = {
@@ -286,83 +286,66 @@ export default function Resume() {
       {/* AI Summary Section */}
       {summary && (
         <div className="flex flex-col gap-4 mt-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 border-b border-border-default pb-3">
             <Sparkles className="w-5 h-5 text-brand-primary" />
-            <h2 className="text-[16px] font-semibold text-text-primary">Candidate Profile</h2>
+            <h2 className="text-[16px] font-semibold text-text-primary">What the AI extracted</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Quick Info Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {summary.name && (
-              <div className="flex items-center gap-3 p-3 rounded-[12px] bg-surface-elevated border border-border-default">
-                <User className="w-5 h-5 text-text-muted shrink-0" />
-                <div>
-                  <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Name</span>
-                  <p className="text-[14px] font-medium text-text-primary">{summary.name}</p>
-                </div>
+              <div className="flex flex-col gap-1 p-3 rounded-[10px] bg-surface-elevated border border-border-default">
+                <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Name</span>
+                <p className="text-[13px] font-medium text-text-primary">{summary.name}</p>
               </div>
             )}
             {summary.title && (
-              <div className="flex items-center gap-3 p-3 rounded-[12px] bg-surface-elevated border border-border-default">
-                <Briefcase className="w-5 h-5 text-text-muted shrink-0" />
-                <div>
-                  <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Title</span>
-                  <p className="text-[14px] font-medium text-text-primary">{summary.title}</p>
-                </div>
+              <div className="flex flex-col gap-1 p-3 rounded-[10px] bg-surface-elevated border border-border-default">
+                <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Title</span>
+                <p className="text-[13px] font-medium text-text-primary">{summary.title}</p>
               </div>
             )}
             {summary.level && (
-              <div className="flex items-center gap-3 p-3 rounded-[12px] bg-surface-elevated border border-border-default">
-                <Briefcase className="w-5 h-5 text-text-muted shrink-0" />
-                <div>
-                  <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Level</span>
-                  <p className="text-[14px] font-medium text-text-primary capitalize">{summary.level}</p>
-                </div>
+              <div className="flex flex-col gap-1 p-3 rounded-[10px] bg-surface-elevated border border-border-default">
+                <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Level</span>
+                <p className="text-[13px] font-medium text-text-primary capitalize">{summary.level}</p>
               </div>
             )}
             {summary.yearsExperience != null && (
-              <div className="flex items-center gap-3 p-3 rounded-[12px] bg-surface-elevated border border-border-default">
-                <Briefcase className="w-5 h-5 text-text-muted shrink-0" />
-                <div>
-                  <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Experience</span>
-                  <p className="text-[14px] font-medium text-text-primary">{summary.yearsExperience} years</p>
-                </div>
+              <div className="flex flex-col gap-1 p-3 rounded-[10px] bg-surface-elevated border border-border-default">
+                <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Experience</span>
+                <p className="text-[13px] font-medium text-text-primary">{summary.yearsExperience} years</p>
               </div>
             )}
             {summary.location && (
-              <div className="flex items-center gap-3 p-3 rounded-[12px] bg-surface-elevated border border-border-default">
-                <MapPin className="w-5 h-5 text-text-muted shrink-0" />
-                <div>
-                  <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Location</span>
-                  <p className="text-[14px] font-medium text-text-primary">{summary.location}</p>
-                </div>
+              <div className="flex flex-col gap-1 p-3 rounded-[10px] bg-surface-elevated border border-border-default">
+                <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Location</span>
+                <p className="text-[13px] font-medium text-text-primary">{summary.location}</p>
               </div>
             )}
             {summary.workPreference && summary.workPreference !== 'any' && (
-              <div className="flex items-center gap-3 p-3 rounded-[12px] bg-surface-elevated border border-border-default">
-                <MapPin className="w-5 h-5 text-text-muted shrink-0" />
-                <div>
-                  <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Work Preference</span>
-                  <p className="text-[14px] font-medium text-text-primary capitalize">{summary.workPreference}</p>
-                </div>
+              <div className="flex flex-col gap-1 p-3 rounded-[10px] bg-surface-elevated border border-border-default">
+                <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider">Work Pref</span>
+                <p className="text-[13px] font-medium text-text-primary capitalize">{summary.workPreference}</p>
               </div>
             )}
           </div>
 
+          {/* Skills & Tags Sections */}
           <div className="flex flex-col gap-4 p-4 rounded-[12px] bg-surface-elevated border border-border-default">
-            <SummarySection label="Core Skills" icon={Code} items={summary.skills} />
-            <SummarySection label="Tools & Platforms" icon={Wrench} items={summary.tools} />
+            <SummarySection label="Skills" icon={Code} items={summary.skills} />
+            <SummarySection label="Tools" icon={Wrench} items={summary.tools} />
             <SummarySection label="Languages" icon={Code} items={summary.languages} />
             <SummarySection label="Frameworks" icon={FolderOpen} items={summary.frameworks} />
-            <SummarySection label="Cloud Skills" icon={Wrench} items={summary.cloudSkills} />
-            <SummarySection label="Education" icon={GraduationCap} text={summary.education} />
+            <SummarySection label="Cloud" icon={Wrench} items={summary.cloudSkills} />
+            {summary.education && (
+              <SummarySection label="Education" icon={GraduationCap} text={summary.education} />
+            )}
             {summary.preferredRoles && summary.preferredRoles.length > 0 && (
               <SummarySection label="Preferred Roles" icon={Briefcase} items={summary.preferredRoles} />
             )}
-            {summary.avoidRoles && summary.avoidRoles.length > 0 && (
-              <SummarySection label="Avoid Roles" icon={Briefcase} items={summary.avoidRoles} />
-            )}
             {summary.highlights && summary.highlights.length > 0 && (
-              <SummarySection label="Key Highlights" icon={Sparkles} items={summary.highlights} />
+              <SummarySection label="Highlights" icon={Sparkles} items={summary.highlights} />
             )}
           </div>
         </div>
